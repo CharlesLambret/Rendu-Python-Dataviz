@@ -388,9 +388,9 @@ infos_10545725 = airbnb.find_one({"_id": "10545725"})
 #----------------------------------------------------------------------#
 # 8. Lister le nom, la rue et le pays des logements dont le prix est supérieur à 10000
 
-fkcin_expensive_places = pandas.DataFrame(airbnb.find({"price": {"$gt": 10000}}, {"name": 1, "address.street": 1, "address.country": 1}))
+rly_expensive_places = pandas.DataFrame(airbnb.find({"price": {"$gt": 10000}}, {"name": 1, "address.street": 1, "address.country": 1}))
 
-#print(fkcin_expensive_places)
+#print(rly_expensive_places)
 
 """
  _id                                               name                                            address
@@ -463,7 +463,7 @@ def NuageDePointsDesPrix():
     plt.xlim(0, 13000)
     plt.show()
 
-# NuageDePointsDesPrix()
+NuageDePointsDesPrix()
 
 #----------------------------------------------------------------------#
 # 12. Calculer pour chaque type de logements (room_type) le prix (price)
@@ -491,7 +491,7 @@ def PrixMoyenParTypeDeLogement():
     
     plt.show()
 
-PrixMoyenParTypeDeLogement()
+#PrixMoyenParTypeDeLogement()
 
 #----------------------------------------------------------------------#
 # 13. On veut représenter la distribution du nombre d'avis. Il faut donc calculer pour chaque logement le nombre d'avis qu'il a eu (cf reviews)
@@ -507,7 +507,7 @@ def DistributionduNombredAvis():
     plt.ylabel('Fréquence')
     plt.show()
 
-DistributionduNombredAvis()
+#DistributionduNombredAvis()
 
 #----------------------------------------------------------------------#
 # 14. Compter le nombre de logement pour chaque équipement possible
