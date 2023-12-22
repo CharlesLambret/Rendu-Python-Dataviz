@@ -467,18 +467,31 @@ def NuageDePointsDesPrix():
 
 #----------------------------------------------------------------------#
 # 12. Calculer pour chaque type de logements (room_type) le prix (price)
-average_price_by_room_type = pandas.DataFrame(airbnb.aggregate([
-    {"$group": {"_id": "$room_type", "average_price": {"$avg": "$price"}}}
-]))
+    
+def PrixMoyenParTypeDeLogement():
+    aggregation_result = airbnb.aggregate([
+        {"$group": {
+            "_id": "$room_type", 
+            "average_price": {"$avg": "$price"}
+        }}
+    ])
+    
+    average_price_by_room_type = pandas.DataFrame([
+        {"_id": room['_id'], "average_price": float(room['average_price'].to_decimal())}
+        for room in aggregation_result
+    ])
 
-#print(average_price_by_room_type)
+    sns.set_style("whitegrid")
+    
+    sns.barplot(data=average_price_by_room_type, x='_id', y='average_price', palette="mako")
+    
+    plt.title('Prix moyen par type de logement AirBnb')
+    plt.xlabel('Type de logement')
+    plt.ylabel('Prix moyen')
+    
+    plt.show()
 
-"""
-   _id                        average_price
-0      Shared room  349.5903614457831325301204819277108
-1  Entire home/apt  314.8598452278589853826311263972485
-2     Private room  212.2965204236006051437216338880484
-"""
+PrixMoyenParTypeDeLogement()
 
 #----------------------------------------------------------------------#
 # 13. On veut représenter la distribution du nombre d'avis. Il faut donc calculer pour chaque logement le nombre d'avis qu'il a eu (cf reviews)
