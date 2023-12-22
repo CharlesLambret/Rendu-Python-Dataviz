@@ -5,6 +5,7 @@ from datetime import datetime
 import matplotlib.pyplot as plt
 from bson.decimal128 import Decimal128
 import numpy as np
+import seaborn as sns
 
 
 
@@ -448,22 +449,21 @@ list_by_country = pandas.DataFrame(
 # 11. On veut représenter graphiquement la distribution des prix, il nous faut donc récupérer uniquement les tarifs
 #     - Un tarif apparaissant plusieurs fois dans la base doit être présent plusieurs fois dans cette liste
 
-prices = [listing['price'] for listing in airbnb.find({}, {'price': 1})]
-prices_converted = [float(price.to_decimal()) if isinstance(price, Decimal128) else float(price) for price in prices]
-cleaned_prices = [p for p in prices_converted if p is not None and not np.isnan(p)]
 
-plt.hist(cleaned_prices, bins=50, range=(0, 10000), edgecolor='black')
 
-plt.title('Distribution des Tarifs Airbnb')
-plt.xlabel('Tarif')
-plt.ylabel('Hôtes proposant ce tarif')
-plt.xticks(np.arange(0, 10001, 100))
+def NuageDePointsDesPrix():
+    prices = [listing['price'] for listing in airbnb.find({}, {'price': 1})]
+    prices_converted = [float(price.to_decimal()) if isinstance(price, Decimal128) else float(price) for price in prices if price is not None]
+    cleaned_prices = [p for p in prices_converted if not np.isnan(p)]
+    filtered_prices = [p for p in cleaned_prices if p <= 13000]
+    sns.stripplot(x=filtered_prices, jitter=0.35, size=3, alpha=0.5)
+    plt.title('Distribution des Tarifs Airbnb')
+    plt.xlabel('Tarif')
+    plt.ylabel('Fréquence (superposition des points)')
+    plt.xlim(0, 13000)
+    plt.show()
 
-plt.show()
-
-"""
-Très longue réponse donc je ne vais pas la copier ici 
-"""
+# NuageDePointsDesPrix()
 
 #----------------------------------------------------------------------#
 # 12. Calculer pour chaque type de logements (room_type) le prix (price)
