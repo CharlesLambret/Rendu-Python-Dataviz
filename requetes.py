@@ -495,25 +495,20 @@ PrixMoyenParTypeDeLogement()
 
 #----------------------------------------------------------------------#
 # 13. On veut représenter la distribution du nombre d'avis. Il faut donc calculer pour chaque logement le nombre d'avis qu'il a eu (cf reviews)
-review_counts = pandas.DataFrame(airbnb.aggregate([
-    {"$project": {"_id": 1, "number_of_reviews": {"$size": "$reviews"}}}
-]))
 
-#print(review_counts)
-"""
-_id  number_of_reviews
-0     10006546                 51
-1     10009999                  0
-2      1001265                 96
-3     10021707                  1
-4     10030955                  0
-...        ...                ...
-5550   9983221                107
-5551   9985696                  0
-5552   9987200                 90
-5553   9990304                 13
-5554   9993190                 15
-"""
+def DistributionduNombredAvis():
+    review_counts = pandas.DataFrame(airbnb.aggregate([
+        {"$project": {"_id": 1, "number_of_reviews": {"$size": "$reviews"}}}
+    ]))
+    sns.set_style("whitegrid")
+    sns.histplot(review_counts['number_of_reviews'], kde=False, bins=30, color="skyblue", edgecolor='black')
+    plt.title('Représentation de la distribution du nombre d\'avis')
+    plt.xlabel('Nombre d\'avis')
+    plt.ylabel('Fréquence')
+    plt.show()
+
+DistributionduNombredAvis()
+
 #----------------------------------------------------------------------#
 # 14. Compter le nombre de logement pour chaque équipement possible
 amenity_listing = pandas.DataFrame(airbnb.aggregate([
